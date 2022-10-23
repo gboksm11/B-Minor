@@ -18,7 +18,7 @@ import store from './redux/store';
 import PreHome from './screens/PreHome';
 import LoginScreen from './screens/LoginScreen';
 import SignUpScreen from './screens/SignUpScreen';
-import Home from './screens/Home';
+
 
 const Tab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
