@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 import { Text, View, Image, Button, TouchableOpacity } from "react-native";
 import { StyleSheet} from 'react-native';
-import profPic from '../assets/tate.png'
+import profPic from '../assets/person.png'
 
 
 const Profile = () => {
@@ -16,8 +16,8 @@ const Profile = () => {
         <Image source={profPic} style = {styles.picture}/>
       </View>
 
-      <Text style = {styles.username}>@SalehMajed</Text>
-      <Text style = {styles.location}>Beyt al sheikha Mody</Text>
+      <Text style = {styles.username}>@person1</Text>
+      <Text style = {styles.location}>Person 1</Text>
       <View style = {styles.line}></View>
       <View style = {styles.bContainer}>
 

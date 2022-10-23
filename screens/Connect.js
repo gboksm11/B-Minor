@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Text, View, Image, StyleSheet, SafeAreaView, FlatList, ScrollView } from "react-native";
 import Card from "../components/Card";
-import tate from "../assets/tate.png";
+import personImage from "../assets/person.png";
 
 const Connect = () => {
 
@@ -9,7 +9,7 @@ const Connect = () => {
 
   const renderConnects = () => {
     return dummyVals.map(person => 
-        <Card name={"Andrew Tate"} image={tate} percentage={24}></Card>
+        <Card name={"Person 1"} image={personImage} percentage={24}></Card>
       )
   }
 
