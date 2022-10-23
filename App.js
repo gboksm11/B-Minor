@@ -2,14 +2,19 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { db } from './firebaseConfig';
-import Home from './Screens/Home';
+import Home from './screens/Home';
 import * as Location from 'expo-location';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { LogBox } from 'react-native';
+import Profile from './screens/Profile';
+import Connect from './screens/Connect';
 
-const Stack = createNativeStackNavigator();
+const Tab = createMaterialTopTabNavigator();
 
 export default function App() {
+
+  LogBox.ignoreLogs(['Sending']);
 
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
@@ -36,17 +41,13 @@ export default function App() {
   }
 
   return (
-
-    // <View style = {styles.container}>
-    //   <Text style = {styles.baseText}>{text}</Text>
-    // </View>
-
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="HomeScreen" component={Home} />
-      </Stack.Navigator>
+      <Tab.Navigator initialRouteName='HomeScreen' tabBarPosition='bottom' screenOptions={{swipeEnabled: true, tabBarStyle: {height: "7%"}, tabBarIndicatorStyle: {display: "none"}, animationEnabled: false}}>
+            <Tab.Screen name="Profile" component={Profile}></Tab.Screen>
+            <Tab.Screen name="HomeScreen" component={Home} options={{gestureEnabled: true}}></Tab.Screen>
+            <Tab.Screen name="Connect" component={Connect}></Tab.Screen>
+        </Tab.Navigator>
     </NavigationContainer>
-
   );
 }
 
