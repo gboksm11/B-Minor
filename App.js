@@ -39,6 +39,7 @@ export default function App() {
 
   LogBox.ignoreLogs(['Sending']);
   LogBox.ignoreLogs(['AsyncStorage']);
+  LogBox.ignoreAllLogs(true);
 
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
