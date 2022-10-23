@@ -13,9 +13,12 @@ import { LogBox } from 'react-native';
 import Profile from './screens/Profile';
 import Connect from './screens/Connect';
 import Spotify from './screens/Spotify';
+import { Provider } from 'react-redux';
+import store from './redux/store';
 import PreHome from './screens/PreHome';
 import LoginScreen from './screens/LoginScreen';
 import SignUpScreen from './screens/SignUpScreen';
+
 
 const Tab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
@@ -62,14 +65,16 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator  initialRouteName='PreHome' tabBarPosition='bottom' screenOptions={{headerShown: false, swipeEnabled: true, tabBarStyle: {height: "7%"}, tabBarIndicatorStyle: {display: "none"}, animationEnabled: false}}>
-            <Tab.Screen name="PreHome" component={PreHome}></Tab.Screen>
-            <Tab.Screen name="TabsView" component={TabsView} options={{gestureEnabled: true}}></Tab.Screen>
-            <Tab.Screen name="Login" component={LoginScreen}></Tab.Screen>
-            <Tab.Screen name="SignUp" component={SignUpScreen}></Tab.Screen>
-        </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator  initialRouteName='PreHome' tabBarPosition='bottom' screenOptions={{headerShown: false, swipeEnabled: true, tabBarStyle: {height: "7%"}, tabBarIndicatorStyle: {display: "none"}, animationEnabled: false}}>
+              <Tab.Screen name="PreHome" component={PreHome}></Tab.Screen>
+              <Tab.Screen name="TabsView" component={TabsView} options={{gestureEnabled: true}}></Tab.Screen>
+              <Tab.Screen name="Login" component={LoginScreen}></Tab.Screen>
+              <Tab.Screen name="SignUp" component={SignUpScreen}></Tab.Screen>
+          </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
 

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 import { Text, View, Image, Button, TouchableOpacity } from "react-native";
 import { StyleSheet} from 'react-native';
-import profPic from '../assets/profPic.png'
+import profPic from '../assets/tate.png'
 
 
 const Profile = () => {
