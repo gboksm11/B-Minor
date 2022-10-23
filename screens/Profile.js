@@ -1,15 +1,24 @@
 import { useState, useEffect } from "react";
 
-import { Text, View, Image, Button, TouchableOpacity } from "react-native";
+import { Text, View, Image, Button, TouchableOpacity, ScrollView} from "react-native";
 import { StyleSheet} from 'react-native';
 import profPic from '../assets/person.png'
+import Card from "../components/Card";
 
 
 const Profile = () => {
 
+  const dummyVals = [1,2,3,4,5,6,7,8];
+
+  const renderConnects = () => {
+    return dummyVals.map(person =>
+        <Card name={"Person"} image={profPic}></Card>
+      )
+  }
+
   return(
 
-    
+
     <View style = {styles.container}>
       <Text style = {styles.label}>Profile</Text>
       <View>
@@ -33,9 +42,19 @@ const Profile = () => {
       </View>
 
       <View style = {styles.line}></View>
-      
-        
-      
+
+      <View style = {styles.info}>
+       <ScrollView style={styles.scrollView}>
+
+          {renderConnects()}
+
+        </ScrollView>
+
+
+      </View>
+
+
+
     </View>
   )
 
@@ -52,8 +71,8 @@ const styles = StyleSheet.create({
     },
     baseText: {
       fontSize: 10
-  
-    }, 
+
+    },
     picture: {
         width: 200,
         height: 200,
@@ -108,14 +127,24 @@ const styles = StyleSheet.create({
       padding: 1
 
     },
-    line1: {
-      flex:0.015,
+    info: {
+      flex:0.84,
       flexDirection: 'row',
       width: '90%',
-      backgroundColor: '#ffffff',
+      backgroundColor: '#c0f4cc',
       borderRadius: 20,
-      padding: 1
+      marginTop : '5%',
+      alignItems: 'center',
+      justifyContent: 'center',
 
+    },
+    scrollView: {
+      width: "95%",
+      height: "100%",
+      display: "flex",
+      flexDirection: "column",
+      backgroundColor: "#c0f4cc",
+      marginTop: "5%"
     }
 
   });
