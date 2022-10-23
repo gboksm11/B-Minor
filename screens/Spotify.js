@@ -1,10 +1,14 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { View, StyleSheet, KeyboardAvoidingView, Text, Button } from "react-native";
+import { View, StyleSheet, KeyboardAvoidingView, Text, Button, Image, AsyncStorage } from "react-native";
 import { useEffect, useState } from "react";
 import { ResponseType, useAuthRequest } from "expo-auth-session";
 import axios from "axios";
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from "react-redux";
+import { setToken } from "../redux/userSpotify/userSpotifyActions";
+
+
 const discovery = {
   authorizationEndpoint: 
   "https://accounts.spotify.com/authorize",
@@ -14,7 +18,22 @@ const discovery = {
 
 const Spotify = ({ navigation }) => {
 
-  const [token, setToken] = useState("");
+  const dispatch = useDispatch();
+  const token = useSelector(state => state.userSpotify.token);
+
+  // const [imageURLs, setImageURLs] = useState();
+
+  // const renderImages = () => {
+  //   return imageURLs.map(imageURL => <Image style={styles.imo} source={{uri: imageURL}}></Image>)
+  // }
+
+  //const [token, setToken] = useState("");
+  // const [tracks, setTracks] = useState([]);
+  // const [artists, setArtists] = useState([]);
+  // const [ids , setIds] = useState([]);
+  // const [track_data, setTrackData] = useState([]);
+  // const [images, setImages] = useState([]);
+
   const [request, response, promptAsync] = 
   useAuthRequest(
     {
@@ -41,7 +60,10 @@ const Spotify = ({ navigation }) => {
   useEffect(() => {
     if (response?.type === "success") {
       const { access_token } = response.params;
-      setToken(access_token);
+      dispatch(setToken(access_token));
+      AsyncStorage.setItem("spotify_token", token);
+
+     // setToken(access_token);
     }
   }, [response]);
   useEffect(() => {
@@ -56,47 +78,48 @@ const Spotify = ({ navigation }) => {
         },
       })
         .then((response) => {
-            let tracks = []
+            let tracks1 = [];
+            let images = [];
+            let ids1 = [];
           
             for(let i = 0 ; i < 20; i++) {
-                tracks.push(response.data.items[i].name)
-
-                
+                tracks1.push(response.data.items[i].name);
+                ids1.push(response.data.items[i].id);
+                // images.push(response.data[i]);
             }
-            console.log(tracks)
-            console.log("----------------")
+
+   
         })
         .catch((error) => {
           console.log("error", error.message);
-        });
+        })
+        ;
 
-        axios(
-            "https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=20", {
-            method: "GET",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
+      axios(
+          "https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=20", {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        })
+          .then((response) => {
+              let artists1 = [];
+              let genres1 = [];
+              for(let i = 0 ; i < 20; i++) {
+                  
+                  artists1.push(response.data.items[i].name);
+                  genres1.push(response.data.items[i].genres);
+  
+                  
+              }
           })
-            .then((response) => {
-                let artists = []
-                let genres = []
-                for(let i = 0 ; i < 20; i++) {
-                    
-                    artists.push(response.data.items[i].name)
-                    genres.push(response.data.items[i].genres)
-    
-                    
-                }
-                console.log(artists)
-                console.log("----------------")
-                console.log(genres)
-                console.log("----------------")
-            })
-            .catch((error) => {
-              console.log("error", error.message);
-            });
+          .catch((error) => {
+            console.log("error", error.message);
+          });
+        
+          
 
 
       setTimeout(
@@ -122,6 +145,7 @@ const Spotify = ({ navigation }) => {
       >
         top song player
       </Text>
+      {/* {renderImages()} */}
       <Button
         title="Login with Spotify"
         style={styles.button}
@@ -145,4 +169,8 @@ const styles = StyleSheet.create({
     width: 200,
     marginTop: 50,
   },
+  imo: {
+    width: 200,
+    height: 200,
+  }
 });

@@ -13,7 +13,8 @@ import { LogBox } from 'react-native';
 import Profile from './screens/Profile';
 import Connect from './screens/Connect';
 import Spotify from './screens/Spotify';
-
+import { Provider } from 'react-redux';
+import store from './redux/store';
 const Tab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
 
@@ -46,14 +47,16 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <Tab.Navigator initialRouteName='HomeScreen' tabBarPosition='bottom' screenOptions={{swipeEnabled: true, tabBarStyle: {height: "7%"}, tabBarIndicatorStyle: {display: "none"}, animationEnabled: false}}>
-            <Tab.Screen name="Profile" component={Profile}></Tab.Screen>
-            <Tab.Screen name="HomeScreen" component={Home} options={{gestureEnabled: true}}></Tab.Screen>
-            <Tab.Screen name="Connect" component={Connect}></Tab.Screen>
-            <Tab.Screen name="Spotify" component={Spotify}></Tab.Screen>
-        </Tab.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Tab.Navigator initialRouteName='HomeScreen' tabBarPosition='bottom' screenOptions={{swipeEnabled: true, tabBarStyle: {height: "7%"}, tabBarIndicatorStyle: {display: "none"}, animationEnabled: false}}>
+              <Tab.Screen name="Profile" component={Profile}></Tab.Screen>
+              <Tab.Screen name="HomeScreen" component={Home} options={{gestureEnabled: true}}></Tab.Screen>
+              <Tab.Screen name="Connect" component={Connect}></Tab.Screen>
+              <Tab.Screen name="Spotify" component={Spotify}></Tab.Screen>
+          </Tab.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
 
