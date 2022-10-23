@@ -3,19 +3,19 @@ import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { LogBox } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import { db } from './firebaseConfig';
 import Home from './screens/Home';
 import * as Location from 'expo-location';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { LogBox } from 'react-native';
 import Profile from './screens/Profile';
 import Connect from './screens/Connect';
+import Spotify from './screens/Spotify';
 
 const Tab = createMaterialTopTabNavigator();
+const Stack = createStackNavigator();
 
 export default function App() {
 
@@ -51,6 +51,7 @@ export default function App() {
             <Tab.Screen name="Profile" component={Profile}></Tab.Screen>
             <Tab.Screen name="HomeScreen" component={Home} options={{gestureEnabled: true}}></Tab.Screen>
             <Tab.Screen name="Connect" component={Connect}></Tab.Screen>
+            <Tab.Screen name="Spotify" component={Spotify}></Tab.Screen>
         </Tab.Navigator>
     </NavigationContainer>
   );
