@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
+
 import { Text, View, Image, Button, TouchableOpacity } from "react-native";
 import { StyleSheet} from 'react-native';
 import profPic from '../assets/profPic.png'
 
+
 const Profile = () => {
 
   return(
+
     
     <View style = {styles.container}>
       <Text style = {styles.label}>Profile</Text>
@@ -37,6 +40,7 @@ const Profile = () => {
   )
 
 }
+
 export default Profile;
 
 const styles = StyleSheet.create({
