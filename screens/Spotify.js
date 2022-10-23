@@ -1,12 +1,13 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { View, StyleSheet, KeyboardAvoidingView, Text, Button, Image, AsyncStorage } from "react-native";
+import { View, StyleSheet, KeyboardAvoidingView, Text, Button, Image, AsyncStorage, TouchableOpacity } from "react-native";
 import { useEffect, useState } from "react";
 import { ResponseType, useAuthRequest } from "expo-auth-session";
 import axios from "axios";
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from "react-redux";
 import { setToken } from "../redux/userSpotify/userSpotifyActions";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 
 const discovery = {
@@ -16,8 +17,9 @@ const discovery = {
   "https://accounts.spotify.com/api/token",
 };
 
-const Spotify = ({ navigation }) => {
+const Spotify = ({  }) => {
 
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const token = useSelector(state => state.userSpotify.token);
 
@@ -61,78 +63,81 @@ const Spotify = ({ navigation }) => {
     if (response?.type === "success") {
       const { access_token } = response.params;
       dispatch(setToken(access_token));
-      AsyncStorage.setItem("spotify_token", token);
+      AsyncStorage.setItem("spotify_token", access_token);
+      navigation.navigate("TabsView", {token: token});
 
      // setToken(access_token);
     }
   }, [response]);
-  useEffect(() => {
-    if (token) {
-      axios(
-        "https://api.spotify.com/v1/me/top/tracks?time_range=medium_term&limit=20", {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-        .then((response) => {
-            let tracks1 = [];
-            let images = [];
-            let ids1 = [];
+
+  // console.log(`response = ${response}`);
+  // useEffect(() => {
+  //   if (token) {
+  //     axios(
+  //       "https://api.spotify.com/v1/me/top/tracks?time_range=medium_term&limit=20", {
+  //       method: "GET",
+  //       headers: {
+  //         Accept: "application/json",
+  //         "Content-Type": "application/json",
+  //         Authorization: "Bearer " + token,
+  //       },
+  //     })
+  //       .then((response) => {
+  //           let tracks1 = [];
+  //           let images = [];
+  //           let ids1 = [];
           
-            for(let i = 0 ; i < 20; i++) {
-                tracks1.push(response.data.items[i].name);
-                ids1.push(response.data.items[i].id);
-                // images.push(response.data[i]);
-            }
+  //           for(let i = 0 ; i < 20; i++) {
+  //               tracks1.push(response.data.items[i].name);
+  //               ids1.push(response.data.items[i].id);
+  //               // images.push(response.data[i]);
+  //           }
 
    
-        })
-        .catch((error) => {
-          console.log("error", error.message);
-        })
-        ;
+  //       })
+  //       .catch((error) => {
+  //         console.log("error", error.message);
+  //       })
+  //       ;
 
-      axios(
-          "https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=20", {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        })
-          .then((response) => {
-              let artists1 = [];
-              let genres1 = [];
-              for(let i = 0 ; i < 20; i++) {
+  //     axios(
+  //         "https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=20", {
+  //         method: "GET",
+  //         headers: {
+  //           Accept: "application/json",
+  //           "Content-Type": "application/json",
+  //           Authorization: "Bearer " + token,
+  //         },
+  //       })
+  //         .then((response) => {
+  //             let artists1 = [];
+  //             let genres1 = [];
+  //             for(let i = 0 ; i < 20; i++) {
                   
-                  artists1.push(response.data.items[i].name);
-                  genres1.push(response.data.items[i].genres);
+  //                 artists1.push(response.data.items[i].name);
+  //                 genres1.push(response.data.items[i].genres);
   
                   
-              }
-          })
-          .catch((error) => {
-            console.log("error", error.message);
-          });
+  //             }
+  //         })
+  //         .catch((error) => {
+  //           console.log("error", error.message);
+  //         });
         
           
 
 
-      setTimeout(
-        () =>
-        // rconsole.log("token AHAHHAHA="+token),
-        500
-      );
+  //     setTimeout(
+  //       () =>
+  //       // rconsole.log("token AHAHHAHA="+token),
+  //       500
+  //     );
 
-      //dispatch(tokenAction.addToken(token));
-    }
-  });
+  //     //dispatch(tokenAction.addToken(token));
+  //   }
+  // });
   return (
-    <KeyboardAvoidingView behavior="padding" 
+    <SafeAreaView behavior="padding" 
     style={styles.container}>
       <StatusBar style="light" />
       <Text
@@ -140,21 +145,29 @@ const Spotify = ({ navigation }) => {
           fontSize: 30,
           fontWeight: "bold",
           color: "white",
-          marginBottom: "20%",
+          marginTop: "20%"
         }}
       >
-        top song player
+        Connect your <Text style={styles.spotifyText}>Spotify</Text> Account
       </Text>
       {/* {renderImages()} */}
-      <Button
+      {/* <Button
         title="Login with Spotify"
         style={styles.button}
         onPress={() => {
           promptAsync();
         }}
-      />
-      <View style={{ height: 100 }} />
-    </KeyboardAvoidingView>
+      /> */}
+
+        <TouchableOpacity
+          onPress={() => {
+            promptAsync();
+          }}
+          style={styles.button}
+        >
+          <Text style={styles.buttonText}>Login</Text>
+        </TouchableOpacity>
+    </SafeAreaView>
   );
 };
 export default Spotify;
@@ -162,15 +175,29 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
     backgroundColor: "black",
-  },
-  button: {
-    width: 200,
-    marginTop: 50,
+    flexDirection: "column"
   },
   imo: {
     width: 200,
     height: 200,
+  },
+  button: {
+    backgroundColor: '#1DB954',
+    width: '70%',
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: "auto",
+    marginBottom: "10%",
+    marginLeft: "auto",
+    marginRight: "auto"
+  },
+  spotifyText: {
+    color: "#1DB954"
+  },
+  buttonText: {
+    color: "black",
+    textAlign: "center"
   }
 });

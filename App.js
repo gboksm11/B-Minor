@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { AsyncStorage, StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
@@ -31,7 +31,6 @@ const TabsView = () => {
         <Tab.Screen name="Profile" component={Profile}></Tab.Screen>
         <Tab.Screen name="HomeScreen" component={Home} options={{gestureEnabled: true}}></Tab.Screen>
         <Tab.Screen name="Connect" component={Connect}></Tab.Screen>
-        <Tab.Screen name="Spotify" component={Spotify}></Tab.Screen>
     </Tab.Navigator>
   );
 }
@@ -39,13 +38,14 @@ const TabsView = () => {
 export default function App() {
 
   LogBox.ignoreLogs(['Sending']);
+  LogBox.ignoreLogs(['AsyncStorage']);
 
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
 
   useEffect(() => {
     (async () => {
-
+      AsyncStorage.clear();
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         setErrorMsg('Permission to access location was denied');
@@ -72,6 +72,7 @@ export default function App() {
               <Tab.Screen name="TabsView" component={TabsView} options={{gestureEnabled: true}}></Tab.Screen>
               <Tab.Screen name="Login" component={LoginScreen}></Tab.Screen>
               <Tab.Screen name="SignUp" component={SignUpScreen}></Tab.Screen>
+              <Tab.Screen name="Spotify" component={Spotify}></Tab.Screen>
           </Stack.Navigator>
       </NavigationContainer>
     </Provider>

@@ -27,11 +27,11 @@ const SignUpScreen = () => {
         const user = userCredentials.user;
 
         db.collection("users").add({userName: userName, email: email, password: password})
-          .then(docRef => console.log(docRef))
+          .then(docRef => docRef)
           .catch(error => console.log(error));
 
         console.log('Registered with:', user.email);
-        navigation.navigate("TabsView");
+        navigation.navigate("Spotify");
       })
       .catch(error => alert(error.message))
   }

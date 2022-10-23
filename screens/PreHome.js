@@ -2,16 +2,21 @@ import { useState, useEffect } from "react";
 import { Text, View, Image, StyleSheet, AsyncStorage, TouchableOpacity } from "react-native";
 import logo from "../assets/logo.png";
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from "react-redux";
+import { setToken } from "../redux/userSpotify/userSpotifyActions";
 
 const PreHome = () => {
 
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   useEffect(() => {
 
     async function getToken () {
       const token = await AsyncStorage.getItem("spotify_token");
       if (token) {
+          console.log(`token in prehome= ${token}`);
+          dispatch(setToken(token));
           navigation.navigate("TabsView");
       }
 
